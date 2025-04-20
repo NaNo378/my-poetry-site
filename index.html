@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Majlis al-Cha3ir</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Amiri&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      font-family: 'Amiri', serif;
+      background-color: #000;
+      overflow: hidden;
+      color: #bfa76f;
+    }
+
+    .landing {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      background: radial-gradient(circle, #000, #000);
+      overflow: hidden;
+    }
+
+    .gold-decor {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-image:
+        repeating-linear-gradient(45deg, rgba(191, 167, 111, 0.1) 0 2px, transparent 2px 40px),
+        repeating-linear-gradient(-45deg, rgba(191, 167, 111, 0.1) 0 2px, transparent 2px 40px);
+      z-index: 1;
+      animation: moveDecor 60s linear infinite;
+    }
+
+    @keyframes moveDecor {
+      0% { background-position: 0 0, 0 0; }
+      100% { background-position: 500px 500px, -500px -500px; }
+    }
+
+    .welcome-text {
+      position: relative;
+      z-index: 2;
+      font-size: 2.5rem;
+      padding: 2rem;
+      color: #bfa76f;
+    }
+
+    .main-page {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      height: 100vh;
+      background: radial-gradient(circle, #000, #000);
+      overflow-y: auto;
+      position: relative;
+    }
+
+    .heart-star {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: gold;
+      clip-path: path('M10 30 C10 10, 40 10, 25 30 C10 10, -10 10, 10 30 Z');
+      border-radius: 50%;
+      animation: float 10s infinite ease-in-out;
+    }
+
+    .heart-star::after {
+      content: '\2605';
+      font-size: 18px;
+      color: gold;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0) scale(1); opacity: 0.8; }
+      50% { transform: translateY(-200px) scale(1.2); opacity: 0.5; }
+      100% { transform: translateY(0) scale(1); opacity: 0.8; }
+    }
+
+    .main-title {
+      font-size: 2rem;
+      color: #bfa76f;
+      margin-bottom: 1rem;
+      text-align: center;
+      width: 100%;
+    }
+
+    .section-buttons {
+      display: flex;
+      flex-direction: row;
+      gap: 1rem;
+      justify-content: center;
+      width: 100%;
+      transition: all 0.5s ease-in-out;
+    }
+
+    .section-button {
+      padding: 1rem 2rem;
+      background: #1a1a1a;
+      border: 1px solid #bfa76f;
+      color: #bfa76f;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .section-button:hover {
+      background: #2a2a2a;
+    }
+
+    .section-content {
+      display: none;
+      padding: 2rem;
+      width: 100%;
+      max-width: 800px;
+    }
+
+    .entry-list {
+      margin-top: 2rem;
+    }
+
+    .entry-item {
+      background: #222;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border: 1px solid #bfa76f;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .entry-item:hover {
+      background: #333;
+    }
+
+    .entry-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .entry-actions button {
+      margin-left: 10px;
+      background: darkred;
+      color: white;
+      border: none;
+      padding: 0.4rem 0.8rem;
+      cursor: pointer;
+    }
+
+    textarea, input[type="text"] {
+      width: 100%;
+      background: #111;
+      color: #bfa76f;
+      border: 1px solid #bfa76f;
+      padding: 0.75rem;
+      font-size: 1rem;
+      margin-top: 1rem;
+    }
+
+    .save-btn {
+      margin-top: 1rem;
+      background: #bfa76f;
+      color: black;
+      padding: 0.75rem 1.5rem;
+      font-size: 1.3rem;
+      border: none;
+      cursor: pointer;
+    }
+
+    .content-view {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: radial-gradient(circle, #000, #000);
+      z-index: 10;
+      padding: 3rem;
+      color: #bfa76f;
+      font-size: 1.3rem;
+      overflow-y: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div id="landing" class="landing">
+    <div class="gold-decor"></div>
+    <div class="welcome-text">Welcome Firdaous to the realm of poetry - Property of al cha3ir</div>
+  </div>
+
+  <div id="mainPage" class="main-page">
+    <!-- Generate 50 animated stars -->
+    <script>
+      for (let i = 0; i < 50; i++) {
+        const star = document.createElement('div');
+        star.className = 'heart-star';
+        star.style.top = Math.random() * 100 + '%';
+        star.style.left = Math.random() * 100 + '%';
+        star.style.animationDelay = (Math.random() * 5) + 's';
+        document.addEventListener('DOMContentLoaded', () => {
+          document.getElementById('mainPage').appendChild(star);
+        });
+      }
+    </script>
+
+    <h1 class="main-title">Welcome to the place of art fofo/firdaous</h1>
+    <div class="section-buttons">
+      <button class="section-button" onclick="showSection('poetrySection')">Poetry</button>
+      <button class="section-button" onclick="showSection('writingsSection')">Writings</button>
+    </div>
+    <div id="poetrySection" class="section-content">
+      <input type="text" id="poetryTitle" placeholder="Poetry Title">
+      <textarea id="poetryContent" placeholder="Poetry Content"></textarea>
+      <button class="save-btn" onclick="saveEntry('poetry')">Save Poetry</button>
+      <div class="entry-list" id="poetryList"></div>
+    </div>
+    <div id="writingsSection" class="section-content">
+      <input type="text" id="writingsTitle" placeholder="Writing Title">
+      <textarea id="writingsContent" placeholder="Writing Content"></textarea>
+      <button class="save-btn" onclick="saveEntry('writings')">Save Writing</button>
+      <div class="entry-list" id="writingsList"></div>
+    </div>
+  </div>
+
+  <div id="contentView" class="content-view" onclick="this.style.display='none'"></div>
+
+  <script>
+    const data = JSON.parse(localStorage.getItem('museumData')) || {
+      poetry: [],
+      writings: []
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          document.getElementById('landing').style.display = 'none';
+          document.getElementById('mainPage').style.display = 'flex';
+          loadEntries('poetry');
+          loadEntries('writings');
+          const audio = new Audio('https://cdn.pixabay.com/audio/2022/03/11/audio_d83d7fd01e.mp3');
+          audio.loop = true;
+          audio.volume = 0.2;
+          audio.play();
+        }
+      });
+    });
+
+    function showSection(id) {
+      document.querySelectorAll('.section-content').forEach(section => section.style.display = 'none');
+      document.getElementById(id).style.display = 'block';
+    }
+
+    function loadEntries(section) {
+      const container = document.getElementById(section + 'List');
+      container.innerHTML = '';
+      data[section].forEach((entry, index) => {
+        const div = document.createElement('div');
+        div.className = 'entry-item';
+        div.innerHTML = `
+          <div class="entry-title">${entry.title}</div>
+          <div class="entry-actions">
+            <button onclick="deleteEntry('${section}', ${index})">Delete</button>
+          </div>`;
+        div.ondblclick = () => showContent(entry.content);
+        container.appendChild(div);
+      });
+    }
+
+    function saveEntry(section) {
+      const title = document.getElementById(section + 'Title').value.trim();
+      const content = document.getElementById(section + 'Content').value.trim();
+      if (!title || !content) return alert('Please enter title and content');
+      data[section].push({ title, content });
+      localStorage.setItem('museumData', JSON.stringify(data));
+      loadEntries(section);
+      document.getElementById(section + 'Title').value = '';
+      document.getElementById(section + 'Content').value = '';
+    }
+
+    function deleteEntry(section, index) {
+      if (!confirm('Are you sure you want to delete this entry?')) return;
+      data[section].splice(index, 1);
+      localStorage.setItem('museumData', JSON.stringify(data));
+      loadEntries(section);
+    }
+
+    function showContent(content) {
+      const viewer = document.getElementById('contentView');
+      viewer.innerText = content;
+      viewer.style.display = 'flex';
+    }
+  </script>
+</body>
+</html>
